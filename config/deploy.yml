@@ -1,0 +1,45 @@
+service: mortimerdocs
+
+# Docker image name that Kamal will build and push.
+image: andreastakiro/mortimerdocs
+
+servers:
+  web:
+    hosts:
+      - 135.181.103.74
+    # No traefik.* labels anymore in Kamal 2.x. Healthcheck moved to proxy.
+
+env:
+  clear:
+    NODE_ENV: production
+    PORT: "3000"
+  secret:
+    []
+    # Add runtime secrets here later, and define them in .kamal/secrets
+    # e.g.
+    # API_TOKEN:
+    #   - KAMAL_SECRET_API_TOKEN
+
+registry:
+  server: "localhost:5555"
+  # server: docker.io
+  # username: andreastakiro
+  # password:
+  #   - KAMAL_REGISTRY_PASSWORD
+    # You'll export KAMAL_REGISTRY_PASSWORD in your shell (or .kamal/secrets)
+    # before running kamal.
+
+proxy:
+  # kamal-proxy replaces Traefik in Kamal 2.x
+  ssl: true                 # manage Let's Encrypt certs + serve HTTPS
+  host: docs.mortimer.pro        # only requests for this host get routed to this app
+  app_port: 3000            # your container listens on 3000 (Nuxt)
+  forward_headers: true     # preserve client IP / proto headers (useful w/ CDNs)
+  healthcheck:
+    path: "/"               # Kamal will hit this before switching traffic
+    interval: 2             # seconds between checks (optional, sane default)
+    timeout: 2              # seconds before giving up (optional)
+
+builder:
+  arch: arm64               # build/push an arm64 image locally from your machine
+  # If you ever need multi-arch or a remote builder, this is where it goes.
