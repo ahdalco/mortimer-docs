@@ -6,6 +6,10 @@
 .cache
 dist
 
+# Kamal
+.kamal 
+secrets
+
 # Node dependencies
 node_modules
 
