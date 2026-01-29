@@ -13,4 +13,10 @@ export default defineNuxtConfig({
       name: 'Danish',
     }],
   },
+  content: {
+    database: {
+      type: 'sqlite',
+      filename: '/tmp/nuxt-content.db'
+    }
+  },
 })
